@@ -10,22 +10,25 @@ void main() {
 } //fim da função main
  
 /* 
- * Instancia um Objeto da classe TextEditingController com nome de 'conteudo' para passarmos no parâmetro controller do nosso TextField
+ * Instancia Objetos da classe TextEditingController para passarmos no parâmetro controller dos nossos TextFields
 */
 TextEditingController conteudo = TextEditingController();
 TextEditingController controllerUsuario = TextEditingController();
 TextEditingController controllerSenha = TextEditingController();
- 
+
+// Variável booleana que armazena se o usuário está logado ou não
 bool isLogado = false;
  
 /*
  * Nosso Widget MyApp, onde toda construção da nossa tela inicial do app é feita
+ * Ele é Stateful, ou seja, pode ter vários estados e apresentar modificações na tela
 */
 class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
 }
  
+// Estado inicial do nosso app
 class _MyAppState extends State<MyApp> {
   /*
    * Função build:
@@ -38,7 +41,7 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           brightness: Brightness.dark,
           primarySwatch: Colors.indigo,
-        ), // parâmetro theme, recebendo o tema escuro
+        ), // parâmetro theme, recebendo um ThemeData que define o dark mode e a paleta de cor principal do app
         debugShowCheckedModeBanner:
             false, // ao passar false para este parâmetro, esconde-se uma tag de debug que ficaria no canto da tela
  
@@ -55,6 +58,7 @@ class _MyAppState extends State<MyApp> {
               ? AppBar(
                   title: Text('Bem-vindo(a), ${controllerUsuario.text}'),
                   actions: [
+                   // Acrescentamos um botão de Logoff no AppBar
                     PopupMenuButton(
                       itemBuilder: (c) => [
                         PopupMenuItem(
@@ -146,6 +150,7 @@ class _MyAppState extends State<MyApp> {
                         child: TextField(
                           // No parâmetro 'controller' do nosso TextField, passamos o TextEditingController que instanciamos nas primeiras linhas do nosso código.
                           controller: controllerSenha,
+                         // Para a senha, passamos true para o parâmetro obscureText para que o conteúdo da senha não fique exposto enquanto digita
                           obscureText: true,
  
                           // Para o parâmetro decoration, passamos alguns recursos de estilização para deixar nosso app bonito e dinâmico
@@ -158,8 +163,12 @@ class _MyAppState extends State<MyApp> {
                               ), //fim InputDecoration
                         ), //fim TextField
                       ), // fim Padding
+                     
+                     // Botão de login
                       TextButton(
+                       // Para o parâmetro onPressed, testamos se o usuário e senha estão corretos para então definir isLogado como true
                         onPressed: () {
+                         // A função do setState permite que a tela atualize em estado após o término da função, fazendo com que possamos apresentar mudanças na tela durante a execução do app
                           setState(() {
                             if (controllerUsuario.text == 'marcelo') {
                               if (controllerSenha.text == '123') {
